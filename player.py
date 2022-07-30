@@ -4,28 +4,28 @@ from config import config
 
 class Player:
   def __init__(self, x, y):
-    self.images = {
-      "left": [],
-      "right": [],
-    }
-    self.index = 0
+    self.current_index = 0
     self.counter = 0
     self.direction = "right"
+    self.jumped = False
+    self.vel_y = 0
+
+    self.images = { "left": [], "right": [] }
 
     for num in range(1, 5):
       img = pygame.image.load(f"./assets/img/guy{num}.png")
+      
       img_right = pygame.transform.scale(img, config.player_size)
-      img_left = pygame.transform.flip(img_right, True, False)
       self.images["right"].append(img_right)
+      
+      img_left = pygame.transform.flip(img_right, True, False)
       self.images["left"].append(img_left)
     
-    self.image = self.images[self.direction][self.index]
+    self.image = self.images[self.direction][self.current_index]
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.y = y
 
-    self.vel_y = 0
-    self.jumped = False
 
   def update(self, screen, world):
     self.__move(world)
