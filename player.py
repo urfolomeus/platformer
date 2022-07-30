@@ -21,7 +21,7 @@ class Player:
       img_left = pygame.transform.flip(img_right, True, False)
       self.images["left"].append(img_left)
     
-    self.image = self.images[self.direction][self.current_index]
+    self.__update_image()
     self.rect = self.image.get_rect()
     self.rect.x = x
     self.rect.y = y
@@ -54,7 +54,7 @@ class Player:
       self.current_index += 1
       if self.current_index >= len(self.images[self.direction]):
         self.current_index = 0
-      self.image = self.images[self.direction][self.current_index]
+      self.__update_image()
 
   def __check_for_collisions(self, tile_list, dx, dy):
     for tile in tile_list:
@@ -94,7 +94,7 @@ class Player:
     if not key[pygame.K_LEFT] and not key[pygame.K_RIGHT]:
       self.counter = 0
       self.current_index = 0
-      self.image = self.images[self.direction][self.current_index]
+      self.__update_image()
 
     return dx
 
@@ -103,3 +103,6 @@ class Player:
 
     if self.vel_y == 10:
       self.vel_y = 10
+
+  def __update_image(self):
+    self.image = self.images[self.direction][self.current_index]
