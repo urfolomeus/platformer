@@ -1,18 +1,13 @@
 import pygame
 from pygame.locals import *
 
+from config import config
+
 pygame.init()
 
 # Set up game
-OPTS = {
-  "width": 1000,
-  "height": 1000,
-  "title": "Platformer",
-  "tile_size": 50,
-}
-
-screen = pygame.display.set_mode((OPTS["width"], OPTS["height"]))
-pygame.display.set_caption(OPTS["title"])
+screen = pygame.display.set_mode((config.width, config.height))
+pygame.display.set_caption(config.title)
 
 # Load assets
 img_bg = pygame.image.load("./assets/img/sky.png")
@@ -21,8 +16,8 @@ img_sun = pygame.image.load("./assets/img/sun.png")
 # Draw grid (helps us see where things will go on screen)
 def draw_grid():
 	for line in range(0, 20):
-		pygame.draw.line(screen, (255, 255, 255), (0, line * OPTS["tile_size"]), (OPTS["width"], line * OPTS["tile_size"]))
-		pygame.draw.line(screen, (255, 255, 255), (line * OPTS["tile_size"], 0), (line * OPTS["tile_size"], OPTS["height"]))
+		pygame.draw.line(screen, (255, 255, 255), (0, line * config.tile_size), (config.width, line * config.tile_size))
+		pygame.draw.line(screen, (255, 255, 255), (line * config.tile_size, 0), (line * config.tile_size, config.height))
 
 class World:
   def __init__(self, data):
@@ -44,10 +39,10 @@ class World:
       screen.blit(tile[0], tile[1])
 
   def __build_tile__(self, img_name, x_start, y_start):
-    img = pygame.transform.scale(img_name, (OPTS["tile_size"], OPTS["tile_size"]))
+    img = pygame.transform.scale(img_name, (config.tile_size, config.tile_size))
     img_rect = img.get_rect()
-    img_rect.x = x_start * OPTS["tile_size"]
-    img_rect.y = y_start * OPTS["tile_size"]
+    img_rect.x = x_start * config.tile_size
+    img_rect.y = y_start * config.tile_size
     tile = (img, img_rect)
     self.tile_list.append(tile)
 
