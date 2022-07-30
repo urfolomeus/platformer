@@ -23,6 +23,37 @@ def draw_grid():
 		pygame.draw.line(screen, (255, 255, 255), (0, line * TILE_SIZE), (SCREEN_OPTS["width"], line * TILE_SIZE))
 		pygame.draw.line(screen, (255, 255, 255), (line * TILE_SIZE, 0), (line * TILE_SIZE, SCREEN_OPTS["height"]))
 
+class World:
+  def __init__(self, data):
+    self.tile_list = []
+
+    # load images
+    img_dirt = pygame.image.load("./assets/img/dirt.png")
+
+    for row_idx, row in enumerate(data):
+      for tile_idx, tile in enumerate(row):
+        if tile == 1:
+          img = pygame.transform.scale(img_dirt, (TILE_SIZE, TILE_SIZE))
+          img_rect = img.get_rect()
+          img_rect.x = tile_idx * TILE_SIZE
+          img_rect.y = row_idx * TILE_SIZE
+          tile = (img, img_rect)
+          self.tile_list.append(tile)
+
+  def draw(self):
+    for tile in self.tile_list:
+      screen.blit(tile[0], tile[1])
+
+# Build world
+world_data = [
+  [1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 1],
+  [1, 0, 0, 0, 1],
+  [1, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1],
+]
+world = World(world_data)
+
 # Game loop
 run = True
 
@@ -30,6 +61,7 @@ while run :
   screen.blit(img_bg, (0, 0))
   screen.blit(img_sun, (100, 100))
 
+  world.draw()
   draw_grid()
 
   for event in pygame.event.get():
