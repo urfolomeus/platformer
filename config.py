@@ -7,6 +7,7 @@ OPTS = {
   "tile_size": 50,
   "title": "Platformer",
   "gravity": 1,
+  "jump_height": -15,
 }
 
 class Config:
@@ -23,5 +24,6 @@ class Config:
     self.player_step_size = OPTS["player_step_size"]
 
     self.gravity = OPTS["gravity"]
+    self.jump_height = OPTS["jump_height"]
 
 config = Config()

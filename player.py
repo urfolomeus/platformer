@@ -26,7 +26,7 @@ class Player:
     key = pygame.key.get_pressed()
 
     if key[pygame.K_SPACE] and not self.jumped:
-      self.vel_y = -15
+      self.vel_y = config.jump_height
       self.jumped = True
     if not key[pygame.K_SPACE]:
       self.jumped = False
@@ -35,10 +35,7 @@ class Player:
     if key[pygame.K_RIGHT]:
       dx += config.player_step_size
 
-    # add gravity
-    self.vel_y += config.gravity
-    if self.vel_y == 10:
-      self.vel_y = 10
+    self.__simulate_gravity()
 
     dy += self.vel_y
 
@@ -51,3 +48,9 @@ class Player:
     if self.rect.bottom > config.height:
       self.rect.bottom = config.height
       dy = 0
+
+  def __simulate_gravity(self):
+    self.vel_y += config.gravity
+
+    if self.vel_y == 10:
+      self.vel_y = 10
