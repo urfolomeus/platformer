@@ -3,6 +3,7 @@ OPTS = {
   "cols": 20,
   "player_height": 80,
   "player_start_x": 100,
+  "player_step_size": 5,
   "tile_size": 50,
   "title": "Platformer",
 }
@@ -18,5 +19,6 @@ class Config:
     self.player_size = (OPTS["player_height"] / 2, OPTS["player_height"])
     self.player_start_x = OPTS["player_start_x"]
     self.player_start_y = self.height - self.tile_size - OPTS["player_height"]
+    self.player_step_size = OPTS["player_step_size"]
 
 config = Config()

@@ -11,4 +11,23 @@ class Player:
     self.rect.y = y
 
   def update(self, screen):
+    self.__move()
     screen.blit(self.image, self.rect)
+
+  def __move(self):
+    dx = 0
+    dy = 0
+
+    # get keypresses
+    key = pygame.key.get_pressed()
+
+    if key[pygame.K_LEFT]:
+      dx -= config.player_step_size
+    elif key[pygame.K_RIGHT]:
+      dx += config.player_step_size
+
+    # check for collisions
+
+    # update player coordinates
+    self.rect.x += dx
+    self.rect.y += dy
