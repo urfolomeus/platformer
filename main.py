@@ -29,11 +29,19 @@ class World:
 
     # load images
     img_dirt = pygame.image.load("./assets/img/dirt.png")
+    img_grass = pygame.image.load("./assets/img/grass.png")
 
     for row_idx, row in enumerate(data):
       for tile_idx, tile in enumerate(row):
         if tile == 1:
           img = pygame.transform.scale(img_dirt, (TILE_SIZE, TILE_SIZE))
+          img_rect = img.get_rect()
+          img_rect.x = tile_idx * TILE_SIZE
+          img_rect.y = row_idx * TILE_SIZE
+          tile = (img, img_rect)
+          self.tile_list.append(tile)
+        if tile == 2:
+          img = pygame.transform.scale(img_grass, (TILE_SIZE, TILE_SIZE))
           img_rect = img.get_rect()
           img_rect.x = tile_idx * TILE_SIZE
           img_rect.y = row_idx * TILE_SIZE
@@ -50,7 +58,7 @@ world_data = [
   [1, 0, 0, 0, 1],
   [1, 0, 0, 0, 1],
   [1, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1],
+  [1, 2, 2, 2, 1],
 ]
 world = World(world_data)
 
