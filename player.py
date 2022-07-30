@@ -36,6 +36,53 @@ class Player:
     dx = 0
     dy = 0
 
+    dx = self.__handle_keypress(dx)
+
+    self.__animate()
+
+    self.__simulate_gravity()
+
+    dy += self.vel_y
+
+    (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
+
+    # update player coordinates
+    self.rect.x += dx
+    self.rect.y += dy
+
+    if self.rect.bottom > config.height:
+      self.rect.bottom = config.height
+      dy = 0
+
+  def __animate(self):
+    walk_cooldown = 5
+
+    if self.counter > walk_cooldown:
+      self.counter = 0
+      self.current_index += 1
+      if self.current_index >= len(self.images[self.direction]):
+        self.current_index = 0
+      self.image = self.images[self.direction][self.current_index]
+
+  def __check_for_collisions(self, tile_list, dx, dy):
+    for tile in tile_list:
+      # check for collisions in x direction
+      if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.image.get_width(), self.image.get_height()):
+        dx = 0
+
+      # check for collisions in y direction
+      if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.image.get_width(), self.image.get_height()):
+        # check if jumping or falling
+        if self.vel_y < 0:
+          dy = tile[1].bottom - self.rect.top
+          self.vel_y = 0
+        else:
+          dy = tile[1].top - self.rect.bottom
+          self.vel_y = 0
+
+    return (dx, dy)
+
+  def __handle_keypress(self, dx):
     # get keypresses
     key = pygame.key.get_pressed()
 
@@ -57,45 +104,7 @@ class Player:
       self.current_index = 0
       self.image = self.images[self.direction][self.current_index]
 
-    self.__animate()
-
-    self.__simulate_gravity()
-
-    dy += self.vel_y
-
-    # check for collisions
-    for tile in world.tile_list:
-      # check for collisions in x direction
-      if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.image.get_width(), self.image.get_height()):
-        dx = 0
-
-      # check for collisions in y direction
-      if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.image.get_width(), self.image.get_height()):
-        # check if jumping or falling
-        if self.vel_y < 0:
-          dy = tile[1].bottom - self.rect.top
-          self.vel_y = 0
-        else:
-          dy = tile[1].top - self.rect.bottom
-          self.vel_y = 0
-
-    # update player coordinates
-    self.rect.x += dx
-    self.rect.y += dy
-
-    if self.rect.bottom > config.height:
-      self.rect.bottom = config.height
-      dy = 0
-
-  def __animate(self):
-    walk_cooldown = 5
-
-    if self.counter > walk_cooldown:
-      self.counter = 0
-      self.current_index += 1
-      if self.current_index >= len(self.images[self.direction]):
-        self.current_index = 0
-      self.image = self.images[self.direction][self.current_index]
+    return dx
 
   def __simulate_gravity(self):
     self.vel_y += config.gravity
