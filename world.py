@@ -1,5 +1,6 @@
 import pygame
 
+import util
 from config import config
 
 class World:
@@ -20,7 +21,7 @@ class World:
   def draw(self, screen):
     for tile in self.tile_list:
       screen.blit(tile[0], tile[1])
-      pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+      util.draw_rect(screen, tile[1])
 
   def __build_tile__(self, img_name, x_start, y_start):
     img = pygame.transform.scale(img_name, (config.tile_size, config.tile_size))

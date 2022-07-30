@@ -1,5 +1,6 @@
 import pygame
 
+import util
 from config import config
 
 class Player:
@@ -30,7 +31,7 @@ class Player:
   def update(self, screen, world):
     self.__move(world)
     screen.blit(self.image, self.rect)
-    pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
+    util.draw_rect(screen, self.rect)
 
   def __move(self, world):
     dx = 0

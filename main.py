@@ -31,7 +31,7 @@ while run :
   screen.blit(img_sun, (100, 100))
 
   world.draw(screen)
-  # util.draw_grid(screen)
+  util.draw_grid(screen)
   player.update(screen, world)
 
   for event in pygame.event.get():

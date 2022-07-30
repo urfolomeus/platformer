@@ -9,6 +9,8 @@ OPTS = {
   "gravity": 1,
   "jump_height": -15,
   "fps": 60,
+  "draw_grid": False,
+  "draw_rect": False,
 }
 
 class Config:
@@ -28,5 +30,8 @@ class Config:
 
     self.gravity = OPTS["gravity"]
     self.jump_height = OPTS["jump_height"]
+
+    self.draw_grid = OPTS["draw_grid"]
+    self.draw_rect = OPTS["draw_rect"]
 
 config = Config()
