@@ -34,23 +34,21 @@ class World:
     for row_idx, row in enumerate(data):
       for tile_idx, tile in enumerate(row):
         if tile == 1:
-          img = pygame.transform.scale(img_dirt, (TILE_SIZE, TILE_SIZE))
-          img_rect = img.get_rect()
-          img_rect.x = tile_idx * TILE_SIZE
-          img_rect.y = row_idx * TILE_SIZE
-          tile = (img, img_rect)
-          self.tile_list.append(tile)
+          self.__build_tile__(img_dirt, tile_idx, row_idx)
         if tile == 2:
-          img = pygame.transform.scale(img_grass, (TILE_SIZE, TILE_SIZE))
-          img_rect = img.get_rect()
-          img_rect.x = tile_idx * TILE_SIZE
-          img_rect.y = row_idx * TILE_SIZE
-          tile = (img, img_rect)
-          self.tile_list.append(tile)
+          self.__build_tile__(img_grass, tile_idx, row_idx)
 
   def draw(self):
     for tile in self.tile_list:
       screen.blit(tile[0], tile[1])
+
+  def __build_tile__(self, img_name, x_start, y_start):
+    img = pygame.transform.scale(img_name, (TILE_SIZE, TILE_SIZE))
+    img_rect = img.get_rect()
+    img_rect.x = x_start * TILE_SIZE
+    img_rect.y = y_start * TILE_SIZE
+    tile = (img, img_rect)
+    self.tile_list.append(tile)
 
 # Build world
 world_data = [
