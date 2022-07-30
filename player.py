@@ -37,22 +37,14 @@ class Player:
     dy = 0
 
     dx = self.__handle_keypress(dx)
-
     self.__animate()
-
     self.__simulate_gravity()
-
     dy += self.vel_y
-
     (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
 
     # update player coordinates
     self.rect.x += dx
     self.rect.y += dy
-
-    if self.rect.bottom > config.height:
-      self.rect.bottom = config.height
-      dy = 0
 
   def __animate(self):
     walk_cooldown = 5
