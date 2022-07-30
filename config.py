@@ -8,11 +8,14 @@ OPTS = {
   "title": "Platformer",
   "gravity": 1,
   "jump_height": -15,
+  "fps": 60,
 }
 
 class Config:
   def __init__(self):
     self.title = OPTS["title"]
+
+    self.fps = OPTS["fps"]
 
     self.width = OPTS["rows"] * OPTS["tile_size"]
     self.height = OPTS["cols"] * OPTS["tile_size"]
