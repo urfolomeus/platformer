@@ -32,7 +32,7 @@ while run :
 
   world.draw(screen)
   # util.draw_grid(screen)
-  player.update(screen)
+  player.update(screen, world)
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
