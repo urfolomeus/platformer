@@ -35,7 +35,6 @@ class Player:
   def __move(self, world):
     dx = 0
     dy = 0
-    walk_cooldown = 5
 
     # get keypresses
     key = pygame.key.get_pressed()
@@ -55,16 +54,10 @@ class Player:
       self.direction = "right"
     if not key[pygame.K_LEFT] and not key[pygame.K_RIGHT]:
       self.counter = 0
-      self.index = 0
-      self.image = self.images[self.direction][self.index]
+      self.current_index = 0
+      self.image = self.images[self.direction][self.current_index]
 
-    # handle animation
-    if self.counter > walk_cooldown:
-      self.counter = 0
-      self.index += 1
-      if self.index >= len(self.images[self.direction]):
-        self.index = 0
-      self.image = self.images[self.direction][self.index]
+    self.__animate()
 
     self.__simulate_gravity()
 
@@ -93,6 +86,16 @@ class Player:
     if self.rect.bottom > config.height:
       self.rect.bottom = config.height
       dy = 0
+
+  def __animate(self):
+    walk_cooldown = 5
+
+    if self.counter > walk_cooldown:
+      self.counter = 0
+      self.current_index += 1
+      if self.current_index >= len(self.images[self.direction]):
+        self.current_index = 0
+      self.image = self.images[self.direction][self.current_index]
 
   def __simulate_gravity(self):
     self.vel_y += config.gravity
