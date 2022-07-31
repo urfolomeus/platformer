@@ -21,6 +21,8 @@ class Player:
       
       img_left = pygame.transform.flip(img_right, True, False)
       self.images["left"].append(img_left)
+
+    self.dead_image = pygame.image.load("./assets/img/ghost.png")
     
     self.__update_image()
     self.rect = self.image.get_rect()
@@ -37,25 +39,27 @@ class Player:
     return game_over
 
   def __move(self, world, blob_group, lava_group, game_over):
-    if game_over != 0:
-      return
+    if game_over == -1:
+      self.image = self.dead_image
+      if self.rect.y > 200:
+        self.rect.y -= 5
+    else:
+      dx = 0
+      dy = 0
 
-    dx = 0
-    dy = 0
+      dx = self.__handle_keypress(dx)
+      self.__animate()
+      self.__simulate_gravity()
+      dy += self.vel_y
+      (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
+      if pygame.sprite.spritecollide(self, blob_group, False):
+        game_over = -1
+      if pygame.sprite.spritecollide(self, lava_group, False):
+        game_over = -1
 
-    dx = self.__handle_keypress(dx)
-    self.__animate()
-    self.__simulate_gravity()
-    dy += self.vel_y
-    (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
-    if pygame.sprite.spritecollide(self, blob_group, False):
-      game_over = -1
-    if pygame.sprite.spritecollide(self, lava_group, False):
-      game_over = -1
-
-    # update player coordinates
-    self.rect.x += dx
-    self.rect.y += dy
+      # update player coordinates
+      self.rect.x += dx
+      self.rect.y += dy
 
     return game_over
 
