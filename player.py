@@ -4,10 +4,10 @@ import util
 from config import config
 
 class Player:
-  def __init__(self, x, y):
-    self.reset(x, y)
+  def __init__(self):
+    self.reset()
 
-  def reset(self, x, y):
+  def reset(self):
     self.current_index = 0
     self.counter = 0
     self.direction = "right"
@@ -29,8 +29,8 @@ class Player:
     
     self.__update_image()
     self.rect = self.image.get_rect()
-    self.rect.x = x
-    self.rect.y = y
+    self.rect.x = config.player_start_x
+    self.rect.y = config.player_start_y
 
 
   def update(self, screen, game_context):
