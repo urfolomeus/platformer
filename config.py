@@ -11,6 +11,7 @@ OPTS = {
   "fps": 60,
   "draw_grid": False,
   "draw_rect": False,
+  "cheat_mode": False,
 }
 
 class Config:
@@ -33,5 +34,7 @@ class Config:
 
     self.draw_grid = OPTS["draw_grid"]
     self.draw_rect = OPTS["draw_rect"]
+
+    self.cheat_mode = OPTS["cheat_mode"]
 
 config = Config()

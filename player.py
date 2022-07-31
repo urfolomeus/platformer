@@ -32,6 +32,8 @@ class Player:
     self.rect.x = config.player_start_x
     self.rect.y = config.player_start_y
 
+    self.in_air = True
+
 
   def update(self, screen, game_context):
     if game_context["game_over"] == -1:
@@ -72,7 +74,12 @@ class Player:
         self.current_index = 0
       self.__update_image()
 
+  def __can_jump(self):
+    return config.cheat_mode or not self.in_air
+
   def __check_for_collisions(self, dx, dy, game_context):
+    self.in_air = True
+
     for tile in game_context["world"].tile_list:
       # check for collisions in x direction
       if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.image.get_width(), self.image.get_height()):
@@ -87,6 +94,7 @@ class Player:
         else:
           dy = tile[1].top - self.rect.bottom
           self.vel_y = 0
+          self.in_air = False
 
     if pygame.sprite.spritecollide(self, game_context["blob_group"], False):
       game_context["game_over"] = -1
@@ -100,7 +108,7 @@ class Player:
     # get keypresses
     key = pygame.key.get_pressed()
 
-    if key[pygame.K_SPACE] and not self.jumped:
+    if key[pygame.K_SPACE] and not self.jumped and self.__can_jump():
       self.vel_y = config.jump_height
       self.jumped = True
     if not key[pygame.K_SPACE]:
