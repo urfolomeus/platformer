@@ -31,7 +31,12 @@ class Player:
 
 
   def update(self, screen, world, blob_group, lava_group, game_over):
-    game_over = self.__move(world, blob_group, lava_group, game_over)
+    if game_over == -1:
+      self.image = self.dead_image
+      if self.rect.y > 200:
+        self.rect.y -= 5
+    else:
+      game_over = self.__move(world, blob_group, lava_group, game_over)
     
     screen.blit(self.image, self.rect)
     util.draw_rect(screen, self.rect)
@@ -39,27 +44,18 @@ class Player:
     return game_over
 
   def __move(self, world, blob_group, lava_group, game_over):
-    if game_over == -1:
-      self.image = self.dead_image
-      if self.rect.y > 200:
-        self.rect.y -= 5
-    else:
-      dx = 0
-      dy = 0
+    dx = 0
+    dy = 0
 
-      dx = self.__handle_keypress(dx)
-      self.__animate()
-      self.__simulate_gravity()
-      dy += self.vel_y
-      (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
-      if pygame.sprite.spritecollide(self, blob_group, False):
-        game_over = -1
-      if pygame.sprite.spritecollide(self, lava_group, False):
-        game_over = -1
+    dx = self.__handle_keypress(dx)
+    self.__animate()
+    self.__simulate_gravity()
+    dy += self.vel_y
+    (dx, dy, game_over) = self.__check_for_collisions(world.tile_list, dx, dy, blob_group, lava_group, game_over)
 
-      # update player coordinates
-      self.rect.x += dx
-      self.rect.y += dy
+    # update player coordinates
+    self.rect.x += dx
+    self.rect.y += dy
 
     return game_over
 
@@ -73,7 +69,7 @@ class Player:
         self.current_index = 0
       self.__update_image()
 
-  def __check_for_collisions(self, tile_list, dx, dy):
+  def __check_for_collisions(self, tile_list, dx, dy, blob_group, lava_group, game_over):
     for tile in tile_list:
       # check for collisions in x direction
       if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.image.get_width(), self.image.get_height()):
@@ -89,7 +85,13 @@ class Player:
           dy = tile[1].top - self.rect.bottom
           self.vel_y = 0
 
-    return (dx, dy)
+    if pygame.sprite.spritecollide(self, blob_group, False):
+      game_over = -1
+
+    if pygame.sprite.spritecollide(self, lava_group, False):
+      game_over = -1
+
+    return (dx, dy, game_over)
 
   def __handle_keypress(self, dx):
     # get keypresses
