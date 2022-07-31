@@ -17,7 +17,7 @@ class Player:
     self.images = { "left": [], "right": [] }
 
     for num in range(1, 5):
-      img = pygame.image.load(f"./assets/img/guy{num}.png")
+      img = pygame.image.load(f"./assets/img/{config.character}{num}.png")
       
       img_right = pygame.transform.scale(img, config.player_size)
       self.images["right"].append(img_right)

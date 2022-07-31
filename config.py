@@ -12,6 +12,7 @@ OPTS = {
   "draw_grid": False,
   "draw_rect": False,
   "cheat_mode": False,
+  "character": "rockie",
 }
 
 class Config:
@@ -35,6 +36,7 @@ class Config:
     self.draw_grid = OPTS["draw_grid"]
     self.draw_rect = OPTS["draw_rect"]
 
+    self.character = OPTS["character"]
     self.cheat_mode = OPTS["cheat_mode"]
 
 config = Config()
