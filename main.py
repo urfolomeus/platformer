@@ -17,11 +17,15 @@ pygame.display.set_caption(config.title)
 
 # Load assets
 img_bg = pygame.image.load("./assets/img/sky.png")
+img_exit = pygame.image.load("./assets/img/exit_btn.png")
 img_restart = pygame.image.load("./assets/img/restart_btn.png")
+img_start = pygame.image.load("./assets/img/start_btn.png")
 img_sun = pygame.image.load("./assets/img/sun.png")
 
 # Create buttons
+exit_button = Button(img_exit, config.width // 2 + 150, config.height // 2)
 restart_button = Button(img_restart, config.width // 2 - 50, config.height // 2 - 100)
+start_button = Button(img_start, config.width // 2 - 350, config.height // 2)
 
 # Create objects
 player = Player()
@@ -59,6 +63,7 @@ game_context = {
   "blob_group": blob_group,
   "lava_group": lava_group,
   "game_over": 0,
+  "show_main_menu": True,
 }
 
 # Game loop
@@ -70,23 +75,32 @@ while run :
   screen.blit(img_bg, (0, 0))
   screen.blit(img_sun, (100, 100))
 
-  world.draw(screen)
+  if game_context["show_main_menu"]:
+    exit_button.draw(screen)
+    if exit_button.clicked():
+      run = False
+    
+    start_button.draw(screen)
+    if start_button.clicked():
+      game_context["show_main_menu"] = False
+  else:
+    world.draw(screen)
 
-  util.draw_grid(screen)
+    util.draw_grid(screen)
 
-  game_context = player.update(screen, game_context)
+    game_context = player.update(screen, game_context)
 
-  if game_context["game_over"] == 0:
-    blob_group.update()
-  blob_group.draw(screen)
+    if game_context["game_over"] == 0:
+      blob_group.update()
+    blob_group.draw(screen)
 
-  lava_group.draw(screen)
+    lava_group.draw(screen)
 
-  if game_context["game_over"] == -1:
-    restart_button.draw(screen)
-    if restart_button.restart_clicked():
-      player.reset()
-      game_context["game_over"] = 0
+    if game_context["game_over"] == -1:
+      restart_button.draw(screen)
+      if restart_button.clicked():
+        player.reset()
+        game_context["game_over"] = 0
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:

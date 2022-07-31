@@ -8,21 +8,21 @@ class Button():
     self.rect.x = x
     self.rect.y = y
 
-    self.clicked = False
+    self.hasBeenClicked = False
 
   def draw(self, screen):
     screen.blit(self.image, self.rect)
 
-  def restart_clicked(self):
+  def clicked(self):
     action = False
     pos = pygame.mouse.get_pos()
 
     if self.rect.collidepoint(pos):
-      if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
+      if pygame.mouse.get_pressed()[0] == 1 and not self.hasBeenClicked:
         action = True
-        self.clicked = True
+        self.hasBeenClicked = True
 
       if pygame.mouse.get_pressed()[0] == 0:
-        self.clicked = False
+        self.hasBeenClicked = False
     
     return action
