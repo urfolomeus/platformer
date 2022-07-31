@@ -21,6 +21,7 @@ img_sun = pygame.image.load("./assets/img/sun.png")
 # Create objects
 player = Player(config.player_start_x, config.player_start_y)
 blob_group = pygame.sprite.Group()
+lava_group = pygame.sprite.Group()
 
 # Build world
 world_data = [
@@ -46,7 +47,7 @@ world_data = [
   [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-world = World(world_data, blob_group)
+world = World(world_data, blob_group, lava_group)
 
 # Game loop
 run = True
@@ -58,10 +59,15 @@ while run :
   screen.blit(img_sun, (100, 100))
 
   world.draw(screen)
+
   util.draw_grid(screen)
+
   blob_group.update()
   blob_group.draw(screen)
+
   player.update(screen, world)
+
+  lava_group.draw(screen)
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:

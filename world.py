@@ -3,9 +3,10 @@ import pygame
 import util
 from config import config
 from enemy import Enemy
+from lava import Lava
 
 class World:
-  def __init__(self, data, blob_group):
+  def __init__(self, data, blob_group, lava_group):
     self.tile_list = []
 
     # load images
@@ -21,6 +22,9 @@ class World:
         if tile == 3:
           blob = Enemy(tile_idx * config.tile_size, row_idx * config.tile_size)
           blob_group.add(blob)
+        if tile == 6:
+          lava = Lava(tile_idx * config.tile_size, row_idx * config.tile_size)
+          lava_group.add(lava)
 
   def draw(self, screen):
     for tile in self.tile_list:
