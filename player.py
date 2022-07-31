@@ -5,6 +5,9 @@ from config import config
 
 class Player:
   def __init__(self, x, y):
+    self.reset(x, y)
+
+  def reset(self, x, y):
     self.current_index = 0
     self.counter = 0
     self.direction = "right"

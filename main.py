@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from button import Button
 
 import util
 from config import config
@@ -16,7 +17,11 @@ pygame.display.set_caption(config.title)
 
 # Load assets
 img_bg = pygame.image.load("./assets/img/sky.png")
+img_restart = pygame.image.load("./assets/img/restart_btn.png")
 img_sun = pygame.image.load("./assets/img/sun.png")
+
+# Create buttons
+restart_button = Button(img_restart, config.width // 2 - 50, config.height // 2 - 100)
 
 # Create objects
 player = Player(config.player_start_x, config.player_start_y)
@@ -76,6 +81,12 @@ while run :
   blob_group.draw(screen)
 
   lava_group.draw(screen)
+
+  if game_context["game_over"] == -1:
+    restart_button.draw(screen)
+    if restart_button.restart_clicked():
+      player.reset(config.player_start_x, config.player_start_y)
+      game_context["game_over"] = 0
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
