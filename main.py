@@ -8,6 +8,8 @@ from world import World
 
 PLAYER_START_X = 100
 
+game_over = 0
+
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -62,10 +64,11 @@ while run :
 
   util.draw_grid(screen)
 
-  blob_group.update()
-  blob_group.draw(screen)
+  game_over = player.update(screen, world, blob_group, lava_group, game_over)
 
-  player.update(screen, world)
+  if game_over == 0:
+    blob_group.update()
+  blob_group.draw(screen)
 
   lava_group.draw(screen)
 

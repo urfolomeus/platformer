@@ -28,12 +28,18 @@ class Player:
     self.rect.y = y
 
 
-  def update(self, screen, world):
-    self.__move(world)
+  def update(self, screen, world, blob_group, lava_group, game_over):
+    game_over = self.__move(world, blob_group, lava_group, game_over)
+    
     screen.blit(self.image, self.rect)
     util.draw_rect(screen, self.rect)
+    
+    return game_over
 
-  def __move(self, world):
+  def __move(self, world, blob_group, lava_group, game_over):
+    if game_over != 0:
+      return
+
     dx = 0
     dy = 0
 
@@ -42,10 +48,16 @@ class Player:
     self.__simulate_gravity()
     dy += self.vel_y
     (dx, dy) = self.__check_for_collisions(world.tile_list, dx, dy)
+    if pygame.sprite.spritecollide(self, blob_group, False):
+      game_over = -1
+    if pygame.sprite.spritecollide(self, lava_group, False):
+      game_over = -1
 
     # update player coordinates
     self.rect.x += dx
     self.rect.y += dy
+
+    return game_over
 
   def __animate(self):
     walk_cooldown = 5
