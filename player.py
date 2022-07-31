@@ -30,20 +30,20 @@ class Player:
     self.rect.y = y
 
 
-  def update(self, screen, world, blob_group, lava_group, game_over):
-    if game_over == -1:
+  def update(self, screen, game_context):
+    if game_context["game_over"] == -1:
       self.image = self.dead_image
       if self.rect.y > 200:
         self.rect.y -= 5
     else:
-      game_over = self.__move(world, blob_group, lava_group, game_over)
+      game_context = self.__move(game_context)
     
     screen.blit(self.image, self.rect)
     util.draw_rect(screen, self.rect)
     
-    return game_over
+    return game_context
 
-  def __move(self, world, blob_group, lava_group, game_over):
+  def __move(self, game_context):
     dx = 0
     dy = 0
 
@@ -51,13 +51,13 @@ class Player:
     self.__animate()
     self.__simulate_gravity()
     dy += self.vel_y
-    (dx, dy, game_over) = self.__check_for_collisions(world.tile_list, dx, dy, blob_group, lava_group, game_over)
+    (dx, dy, game_context) = self.__check_for_collisions(dx, dy, game_context)
 
     # update player coordinates
     self.rect.x += dx
     self.rect.y += dy
 
-    return game_over
+    return game_context
 
   def __animate(self):
     walk_cooldown = 5
@@ -69,8 +69,8 @@ class Player:
         self.current_index = 0
       self.__update_image()
 
-  def __check_for_collisions(self, tile_list, dx, dy, blob_group, lava_group, game_over):
-    for tile in tile_list:
+  def __check_for_collisions(self, dx, dy, game_context):
+    for tile in game_context["world"].tile_list:
       # check for collisions in x direction
       if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.image.get_width(), self.image.get_height()):
         dx = 0
@@ -85,13 +85,13 @@ class Player:
           dy = tile[1].top - self.rect.bottom
           self.vel_y = 0
 
-    if pygame.sprite.spritecollide(self, blob_group, False):
-      game_over = -1
+    if pygame.sprite.spritecollide(self, game_context["blob_group"], False):
+      game_context["game_over"] = -1
 
-    if pygame.sprite.spritecollide(self, lava_group, False):
-      game_over = -1
+    if pygame.sprite.spritecollide(self, game_context["lava_group"], False):
+      game_context["game_over"] = -1
 
-    return (dx, dy, game_over)
+    return (dx, dy, game_context)
 
   def __handle_keypress(self, dx):
     # get keypresses
