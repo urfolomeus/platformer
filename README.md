@@ -7,10 +7,9 @@ This is a game developed when following along with [some PyGame tutorial videos]
 1. Install Python. See [.tool-versions](./.tool-versions) for the current version.
 
 ```shell
+python -m venv .venv
+source venv/bin/activate
 pip install --upgrade pip
-pip install virtualenv
-virtualenv -p python3.whatever venv
-source venv/bin/activate  # or activate.fish if on fish shell
 pip install -r requirements.txt
 ```
 
@@ -18,5 +17,5 @@ pip install -r requirements.txt
 
 ```shell
 source venv/bin/activate
-python -m main.py
+python -m main
 ```
