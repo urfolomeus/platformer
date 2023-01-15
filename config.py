@@ -25,7 +25,7 @@ class Config:
     self.height = OPTS["cols"] * OPTS["tile_size"]
     self.tile_size = OPTS["tile_size"]
 
-    self.player_size = (OPTS["player_height"] / 2, OPTS["player_height"])
+    self.player_size = (OPTS["player_height"] / 2, OPTS["player_height"] / 2)
     self.player_start_x = OPTS["player_start_x"]
     self.player_start_y = self.height - self.tile_size - OPTS["player_height"]
     self.player_step_size = OPTS["player_step_size"]
